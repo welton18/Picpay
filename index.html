@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030508">
+<title>NEGOXNFF | Mobile Tool Panel</title>
+<style>
+:root{
+  --bg:#030508;--panel:#080f16;--panel2:#0b1721;--blue:#00b4db;
+  --cyan:#00f5ff;--text:#d9faff;--muted:#7195a2;--line:#123344;
+  --glow:0 0 8px #00b4db88,0 0 22px #00f5ff33;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+body{
+ margin:0;min-height:100vh;background:
+ radial-gradient(ellipse at 50% 0%,#06202b 0,transparent 45%),var(--bg);
+ color:var(--text);font-family:Arial,Helvetica,sans-serif;
+ padding:20px 12px 45px;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;
+ background-image:linear-gradient(#00b4db22 1px,transparent 1px),linear-gradient(90deg,#00b4db22 1px,transparent 1px);
+ background-size:28px 28px}
+.wrap{width:min(100%,470px);margin:auto;position:relative}
+header{text-align:center;padding:18px 10px 22px}
+.logo{font-size:clamp(30px,9vw,43px);font-weight:900;letter-spacing:5px;color:var(--cyan);
+ text-shadow:0 0 7px var(--blue),0 0 22px #00f5ff99}
+.sub{font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:7px}
+.status{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:6px 10px;
+ border:1px solid var(--line);border-radius:20px;color:#8bdce8;font-size:10px;letter-spacing:1px}
+.dot{width:7px;height:7px;border-radius:50%;background:#00f5a0;box-shadow:0 0 8px #00f5a0}
+.panel{background:linear-gradient(145deg,#0a151e,#05090e);border:1px solid #164052;
+ border-radius:16px;box-shadow:var(--glow);padding:17px;margin-bottom:15px}
+.panel-title{font-size:12px;letter-spacing:2px;color:var(--cyan);font-weight:bold;
+ padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:15px}
+.login{max-width:350px;margin:0 auto 16px;text-align:center}
+.login p{font-size:12px;color:var(--muted);line-height:1.6}
+input[type="password"],input[type="text"],select{
+ width:100%;padding:13px 12px;background:#03080d;border:1px solid #15516a;
+ border-radius:9px;color:var(--cyan);outline:none;font-size:14px;margin:7px 0}
+input:focus,select:focus{border-color:var(--cyan);box-shadow:var(--glow)}
+.fake-button,.nav a{display:block;text-align:center;text-decoration:none;font-weight:bold;
+ letter-spacing:1px;color:#001016;background:linear-gradient(90deg,var(--blue),var(--cyan));
+ border:0;border-radius:9px;padding:13px 12px;margin-top:9px;font-size:11px;
+ box-shadow:0 0 13px #00b4db55}
+.note{font-size:10px!important;color:#63828c!important}
+.nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 15px}
+.nav a{font-size:10px;padding:12px 4px;background:#07131b;color:var(--cyan);
+ border:1px solid #14516a;box-shadow:none}
+.nav a:active,.nav a:hover{background:#0b2935;box-shadow:var(--glow)}
+.section{scroll-margin-top:15px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;
+ padding:13px 0;border-bottom:1px solid #102b37}
+.row:last-child{border-bottom:0}
+.row strong{display:block;font-size:12px;font-weight:600}
+.row small{display:block;font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.switch{position:relative;flex:0 0 45px;width:45px;height:25px}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.track{position:absolute;inset:0;background:#182630;border:1px solid #31505b;
+ border-radius:30px;transition:.25s;cursor:pointer}
+.track:before{content:"";position:absolute;width:17px;height:17px;left:3px;top:3px;
+ border-radius:50%;background:#78909a;transition:.25s}
+.switch input:checked+.track{background:#005b73;border-color:var(--cyan);box-shadow:var(--glow)}
+.switch input:checked+.track:before{transform:translateX(20px);background:var(--cyan);box-shadow:0 0 9px var(--cyan)}
+.range-wrap{padding:13px 0}
+.range-head{display:flex;justify-content:space-between;font-size:12px}
+.range-head span:last-child{color:var(--cyan);font-weight:bold}
+input[type=range]{width:100%;accent-color:var(--cyan);margin:17px 0 5px}
+.scale{display:flex;justify-content:space-between;color:var(--muted);font-size:9px}
+.action{display:block;width:100%;padding:14px;border:1px solid var(--cyan);border-radius:9px;
+ background:linear-gradient(90deg,#007da5,#00d9e8);color:#001116;font-weight:900;
+ font-size:11px;letter-spacing:1px;text-align:center;text-decoration:none;margin-top:12px;
+ box-shadow:var(--glow)}
+.scan{margin-top:15px;padding:14px;border:1px solid #14516a;background:#030a10;border-radius:10px}
+.scan-title{font-size:10px;color:var(--cyan);line-height:1.6;letter-spacing:1px}
+.bar{height:7px;background:#12232d;border-radius:10px;overflow:hidden;margin:13px 0 7px}
+.bar:after{content:"";display:block;height:100%;width:100%;background:linear-gradient(90deg,#007da5,var(--cyan));
+ transform:scaleX(0);transform-origin:left;animation:load 3s linear infinite}
+@keyframes load{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.result{padding:12px 8px;background:#07141c;border:1px solid #164052;border-radius:8px;text-align:center}
+.result span{display:block;color:var(--muted);font-size:9px;letter-spacing:1px}
+.result b{display:block;color:var(--cyan);font-size:20px;margin-top:6px;text-shadow:var(--glow)}
+.full{grid-column:1/-1}
+.footer{text-align:center;color:#496b77;font-size:9px;letter-spacing:1px;padding:10px}
+.anchor{display:block;height:1px}
+@media(max-width:360px){body{padding:12px 8px}.panel{padding:13px}.nav a{font-size:9px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+ <div class="logo">NEGOXNFF</div>
+ <div class="sub">MOBILE PERFORMANCE INTERFACE</div>
+ <div class="status"><span class="dot"></span> INTERFACE LOCAL • CSS MODE</div>
+</header>
+
+<section class="panel login" id="login">
+ <div class="panel-title">🔐 KEY VALIDATION PROTOCOL</div>
+ <p>INSIRA SUA CREDENCIAL PREMIUM PARA ACESSAR O PAINEL.</p>
+ <form action="#menu">
+  <input type="password" placeholder="DIGITE SUA CHAVE DE ACESSO" aria-label="Chave de acesso">
+  <button class="fake-button" type="submit">ACESSAR PAINEL</button>
+ </form>
+ <p class="note">Demonstração visual: HTML/CSS não valida credenciais.</p>
+</section>
+
+<nav class="nav" id="menu" aria-label="Navegação do painel">
+ <a href="#regedit">01 / REGEDIT</a>
+ <a href="#hardware">02 / HARDWARE</a>
+ <a href="#touch">03 / TOUCH</a>
+</nav>
+
+<section class="panel section" id="regedit">
+ <div class="panel-title">📈 01 — REGEDIT & CALIBRAÇÃO</div>
+ <div class="row"><div><strong>Sensibilidade Infinita</strong><small>Ajuste virtual de resposta de toque</small></div>
+  <label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+ <div class="row"><div><strong>Macro Regedit Headshot</strong><small>Perfil visual de alinhamento de mira</small></div>
+  <label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+ <div class="row"><div><strong>Zero Recoil Mod</strong><small>Simulação visual de estabilização</small></div>
+  <label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+ <p class="note">Os seletores alteram apenas o estado visual. Não modificam o jogo nem o sistema operacional.</p>
+</section>
+
+<section class="panel section" id="hardware">
+ <div class="panel-title">📱 02 — ANALISADOR DE HARDWARE</div>
+ <label class="range-head" for="fps"><span>SENSIBILIDADE ANALÓGICA</span><span>60–140 Hz</span></label>
+ <div class="range-wrap">
+  <input id="fps" type="range" min="60" max="140" value="90">
+  <div class="scale"><span>60 Hz</span><span>100 Hz</span><span>140 Hz</span></div>
+ </div>
+ <label for="system" class="range-head"><span>SISTEMA OPERACIONAL</span></label>
+ <select id="system"><option>Android</option><option>iPhone</option></select>
+ <label for="model" class="range-head"><span>MODELO DO DISPOSITIVO</span></label>
+ <input id="model" type="text" placeholder="Ex.: Galaxy A06 / Poco X6">
+ <a class="action" href="#scan">VERIFICAR HARDWARE &amp; GERAR COMBINAÇÃO</a>
+ <div class="scan" id="scan">
+  <div class="scan-title">AGUARDE... COLETANDO VETORES DE SENSIBILIDADE DO HARDWARE...</div>
+  <div class="bar"></div>
+  <p class="note">Animação demonstrativa de carregamento em CSS. Não realiza leitura do aparelho.</p>
+ </div>
+ <div class="results">
+  <div class="result"><span>GERAL</span><b>96</b></div>
+  <div class="result"><span>RED DOT</span><b>92</b></div>
+  <div class="result"><span>MIRA 2X</span><b>88</b></div>
+  <div class="result"><span>MIRA 4X</span><b>82</b></div>
+  <div class="result full"><span>BOTÃO DE ATIRAR</span><b>48%</b></div>
+ </div>
+ <p class="note">Valores ilustrativos e fixos; não são calibrados automaticamente para o modelo informado.</p>
+</section>
+
+<section class="panel section" id="touch">
+ <div class="panel-title">🧪 03 — OTIMIZADOR DE TOUCH DELAY</div>
+ <div class="row"><div><strong>Supressão de Toque Avançada</strong><small>Perfil visual de resposta de toque</small></div>
+  <label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+ <div class="row"><div><strong>Touch Booster VIP</strong><small>Ativação visual do perfil booster</small></div>
+  <label class="switch"><input type="checkbox"><span class="track"></span></label></div>
+ <div class="panel-title" style="margin:17px 0 10px">MONITORAMENTO DE SISTEMA</div>
+ <div class="results">
+  <div class="result"><span>TOUCH STATUS</span><b>READY</b></div>
+  <div class="result"><span>LATÊNCIA</span><b>— ms</b></div>
+  <div class="result full"><span>CONEXÃO</span><b style="font-size:14px">MONITORAMENTO SIMULADO</b></div>
+ </div>
+ <p class="note">HTML puro não mede latência real nem controla TalkBack, iOS ou drivers de toque.</p>
+</section>
+<footer class="footer">NEGOXNFF • MOBILE TOOL PANEL • HTML5 + CSS3</footer>
+</main>
+</body>
+</html>
